@@ -1,0 +1,10 @@
+.gitignore/
+.env
+node_modules/
+package-lock.json
+dist/
+coverage/
+.vscode/
+.idea/
+*.log
+*.zip
