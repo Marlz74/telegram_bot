@@ -38,73 +38,38 @@ app.get('/mini-app', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'mini-app.html'));
 });
 
-// app.post('/webhook', (req, res) => {
-//     res.sendStatus(200); // Respond to Telegram webhook
+app.post('/webhook', (req, res) => {
+    const update = req.body; // Telegram update data
+    console.log( update);
 
-//     const update = req.body; // Telegram update data
-//     // console.log('Received update:', update);    
+    if (update.message) {
+        const chatId = update.message.chat.id;
+        const text = update.message.text;
 
-//     if (update.message) {
-//         const chatId = update.message.chat.id;
-//         const text = update.message.text;
-//         console.log(text);
+        
 
-//         if (text == '/start') {
-//             console.log('Received /start command');
-//             bot.sendMessage(chatId, 'Welcome to the mini app!', {
-//                 reply_markup: {
-//                     inline_keyboard: [
-//                         [
-//                             {
-//                                 text: 'Open Mini App',
-//                                 url: `${process.env.NGROK_URL}/mini-app`
-//                             }
-//                         ]
-//                     ]
-//                 }
-//             });
-//         } else {
-//             bot.sendMessage(chatId, `You said: ${text}`);
-//         }
-//     }
-// });
+        if (text === '/start') {
+            bot.sendMessage(chatId, 'Welcome to the mini app!', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: 'Launch Mini App',
+                                web_app: {
+                                    url: `${process.env.NGROK_URL}/mini-app`
+                                }
+                            }
+                        ]
+                    ]
+                }
+            });
+        }
+    }
+
+    res.sendStatus(200); // Respond to Telegram webhook
+});
 
 
-// app.use((req, res, next) => {
-//     if (req.method === 'POST') {
-//         res.status(200).send('OK');
-//         // console.log('Received POST request:', req.body);
-//         // console.log("Received text:", req.body?.message?.text);
-//         const update = req.body; // Telegram update data
-//         // console.log('Received update:', update);    
-
-//         if (update.message) {
-//             const chatId = update.message.chat.id;
-//             const text = update.message.text;
-//             console.log(text);
-
-//             if (text == '/start') {
-//                 console.log('Received /start command');
-//                 bot.sendMessage(chatId, 'Welcome to the mini app!', {
-//                     reply_markup: {
-//                         inline_keyboard: [
-//                             [
-//                                 {
-//                                     text: 'Open Mini App',
-//                                     url: `${process.env.NGROK_URL}/mini-app`
-//                                 }
-//                             ]
-//                         ]
-//                     }
-//                 });
-//             } else {
-//                 bot.sendMessage(chatId, `You said: ${text}`);
-//             }
-//         }
-
-//     }
-//     next();
-// });
 
 
 const PORT = process.env.PORT || 5000;
